@@ -38,8 +38,8 @@ public class RSA {
      * (i.e. whether they are co-prime).
      * @return true if totient Q(n) and e are co-prime, false otherwise
      */
-    private boolean isECoprime(){
-        if(totient.gcd(n) == BigInteger.ONE){
+     public boolean isECoprime(){
+        if(totient.gcd(n) ==  BigInteger.valueOf(1)){
             return true;
         } else {
             return false;
@@ -55,7 +55,11 @@ public class RSA {
         if(message.length() > 0){
             String asciiFormat = "";
             for(int i = 0; i < message.length(); i++){
-                asciiFormat += String.valueOf((int) message.charAt(i)) + " ";
+                if( i < message.length() - 1){
+                    asciiFormat += String.valueOf((int) message.charAt(i)) + " ";
+                } else {
+                    asciiFormat += String.valueOf((int) message.charAt(i));
+                }
             }
             return asciiFormat;
         }

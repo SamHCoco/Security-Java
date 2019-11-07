@@ -10,6 +10,7 @@ public class RSA {
     private HashMap<String, BigInteger> privateKey;
     private BigInteger totient;
     private BigInteger n;
+    private boolean isMessageCreated;
 
     public RSA(int keyBits){
         if(keyBits >= 1024){
@@ -33,13 +34,14 @@ public class RSA {
         }
     }
 
+
     /**
      * Determines whether the Greatest Common Divisor of totient Q(n) and e equals 1
      * (i.e. whether they are co-prime).
      * @return true if totient Q(n) and e are co-prime, false otherwise
      */
      public boolean isECoprime(){
-        if(totient.gcd(n) ==  BigInteger.valueOf(1)){
+        if(totient.gcd(n).equals(BigInteger.ONE)){
             return true;
         } else {
             return false;

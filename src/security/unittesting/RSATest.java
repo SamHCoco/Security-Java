@@ -9,6 +9,22 @@ import static security.rsa.RSA.stringToAscii;
 public class RSATest {
 
     @Test
+    public void decrypt(){
+        String test1 = "Hello";
+        String test2 = "This is an ascii test.";
+        String test3 = "3.14ZQxY'£*&()^%$!-+][{};:'#?,<>.|/";
+
+        RSA rsa = new RSA(1024);
+
+        rsa.encrypt(test1);
+        assertEquals(rsa.decrypt(), test1);
+        rsa.encrypt(test2);
+        assertEquals(rsa.decrypt(), test2);
+        rsa.encrypt(test3);
+        assertEquals(rsa.decrypt(), test3);
+    }
+
+    @Test
     public void stringToAsciiTest(){
         String test1 = "Hello";
         String test2 = "This is an ascii test test.";

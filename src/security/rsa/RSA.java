@@ -1,8 +1,10 @@
 package security.rsa;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 public class RSA {
 
@@ -10,7 +12,7 @@ public class RSA {
     private HashMap<String, BigInteger> privateKey;
     private BigInteger totient;
     private BigInteger n;
-    private boolean isMessageCreated;
+    private BigInteger[] cipherText;
 
     public RSA(int keyBits){
         if(keyBits >= 1024){
@@ -32,6 +34,60 @@ public class RSA {
             privateKey.put("d", e.modInverse(totient));
             privateKey.put("n", n);
         }
+    }
+
+    /**
+     * Encrypts plaintext passed as argument into cipher text using RSA
+     * @param message The plain text message to be encrypted
+     */
+    public void encrypt(String message){
+        if(this.isECoprime()){
+            if(message.length() > 0){
+                cipherText = new BigInteger[message.length()];
+                String ascii = stringToAscii(message);
+
+                if(ascii != null){
+                    Scanner scanner = new Scanner(ascii);
+                    int counter = 0;
+                    while(scanner.hasNext()){
+                        int character = Integer.valueOf(scanner.next());
+                        cipherText[counter] = encrypt(character);
+                        counter++;
+                    }
+                    System.out.println(Arrays.toString(cipherText)); // todo - remove
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Encrypts an ascii code by applying A^e mod(n), where A = ascii code, e = public key, and n = p * q
+     * @param asciiCode the ascii code to be encrypted
+     * @return An encrypted ascii code as a BigInteger value
+     */
+    private BigInteger encrypt(int asciiCode){
+        BigInteger bigAscii = BigInteger.valueOf(asciiCode);
+        return bigAscii.modPow(publicKey.get("e"), publicKey.get("n")); // returns c = M^e mod(n)
+    }
+
+    /**
+     * Decrypts cipher text, c, back to plain text, m, using private key d, via m = c^d mod(n).
+     * @return Reverts the encrypted message stored by object as plain text (decrypted).
+     */
+    public String decrypt(){
+        String plainText = "";
+        if(cipherText != null){
+            BigInteger d = privateKey.get("d");
+            for(BigInteger cipherValue : cipherText){
+                char character =  (char) cipherValue.modPow(d, n).intValue(); // m = c^d mod(n)
+                plainText += String.valueOf(character);
+
+            }
+            System.out.println("DECRYPTED TEXT: " + plainText);
+            return plainText;
+        }
+        return null;
     }
 
 

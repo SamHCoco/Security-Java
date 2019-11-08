@@ -1,7 +1,6 @@
 package security.rsa;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -54,7 +53,6 @@ public class RSA {
                         cipherText[counter] = encrypt(character);
                         counter++;
                     }
-                    System.out.println(Arrays.toString(cipherText)); // todo - remove
                 }
             }
         }
